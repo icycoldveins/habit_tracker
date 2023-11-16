@@ -102,64 +102,53 @@ const HabitList = () => {
           className="flex items-center p-2 bg-gray-100 rounded-lg mb-2 shadow"
         >
           <div className={`w-4 h-full ${habit.color}`} />
-          <div className="flex-grow flex items-center px-2">
-            {editingId === habit.id ? (
-              <div className="flex flex-col">
+          <div className="flex-grow flex flex-col px-2">
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-bold">{habit.title}</span>
+              <div className="flex items-center">
                 <input
-                  type="text"
-                  value={editTitle}
-                  onChange={(e) => handleTitleChange(e, habit.id)}
-                  onBlur={() => handleBlur(habit.id)}
-                  className="bg-gray-100 outline-none"
-                  autoFocus
+                  type="checkbox"
+                  checked={habit.completed}
+                  onChange={() => toggleCompletion(habit.id)}
+                  className="form-checkbox h-5 w-5"
                 />
-                <input
-                  type="text"
-                  value={editGoal}
-                  onChange={(e) => handleGoalChange(e, habit.id)}
-                  onBlur={() => handleBlur(habit.id)}
-                  className="bg-gray-100 outline-none mt-1"
+                <EditIcon
+                  className="text-lg ml-2 cursor-pointer"
+                  onClick={() => openModal(habit)}
+                />
+                <DeleteIcon
+                  className="text-lg ml-2 cursor-pointer"
+                  onClick={() => deleteHabit(habit.id)}
                 />
               </div>
-            ) : (
-              <div className="flex flex-col w-full">
-                <span>{habit.title}</span>
-                <div className="w-full h-2 bg-gray-200 rounded mt-1">
-                  <div
-                    style={{ width: `${(habit.progress / habit.goal) * 100}%` }}
-                    className="h-2 bg-green-500 rounded"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={habit.completed}
-              onChange={() => toggleCompletion(habit.id)}
-              className="mr-2" // Add right margin
-            />
-            {habit.progress > 1 && <FontAwesomeIcon icon={faFire} />}
-            <span>{habit.progress}</span>
-            <EditIcon
-              className="text-lg ml-2 cursor-pointer"
-              onClick={() => openModal(habit)}
-            />
-            <DeleteIcon
-              className="text-lg ml-2 cursor-pointer"
-              onClick={() => deleteHabit(habit.id)}
-            />
-            {isModalOpen && currentHabit && (
-              <Modal
-                habit={currentHabit}
-                onClose={closeModal}
-                onSave={handleHabitUpdate}
+            </div>
+            <div className="w-full bg-gray-200 rounded mt-1">
+              <div
+                style={{ width: `${(habit.progress / habit.goal) * 100}%` }}
+                className="h-2 bg-green-500 rounded"
               />
+            </div>
+            {habit.progress > 0 && (
+              <div className="flex items-center mt-1">
+                <FontAwesomeIcon
+                  icon={faFire}
+                  className="text-orange-500 mr-2"
+                />
+                <span>
+                  {habit.progress}/{habit.goal}
+                </span>
+              </div>
             )}
           </div>
         </div>
       ))}
+      {isModalOpen && currentHabit && (
+        <Modal
+          habit={currentHabit}
+          onClose={closeModal}
+          onSave={handleHabitUpdate}
+        />
+      )}
     </div>
   );
 };
