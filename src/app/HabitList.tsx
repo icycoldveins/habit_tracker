@@ -12,7 +12,7 @@ const HabitList = () => {
       id: 1,
       title: "Productive Work",
       goal: 7,
-      progress: 0, // Change this line
+      progress: 1, // Change this line
       completed: false,
       color: "bg-blue-200",
     },
@@ -122,17 +122,24 @@ const HabitList = () => {
                 />
               </div>
             </div>
+
             <div className="w-full bg-gray-200 rounded mt-1">
               <div
-                style={{ width: `${(habit.progress / habit.goal) * 100}%` }}
+                style={{
+                  width: `${(habit.progress / habit.goal) * 100}%`,
+                  maxWidth: "100%", // Add this line
+                }}
                 className="h-2 bg-green-500 rounded"
               />
             </div>
+
             {habit.progress > 0 && (
               <div className="flex items-center mt-1">
                 <FontAwesomeIcon
                   icon={faFire}
-                  className="text-orange-500 mr-2"
+                  className={`text-orange-500 mr-2 ${
+                    habit.completed ? "w-5" : "w-4"
+                  }`}
                 />
                 <span>
                   {habit.progress}/{habit.goal}
