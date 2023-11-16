@@ -122,11 +122,14 @@ const HabitList = () => {
                 />
               </div>
             ) : (
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 <span>{habit.title}</span>
-                <small>
-                  {habit.goal} - {habit.progress}
-                </small>
+                <div className="w-full h-2 bg-gray-200 rounded mt-1">
+                  <div
+                    style={{ width: `${(habit.progress / habit.goal) * 100}%` }}
+                    className="h-2 bg-green-500 rounded"
+                  />
+                </div>
               </div>
             )}
           </div>

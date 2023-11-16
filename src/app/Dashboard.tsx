@@ -13,9 +13,11 @@ const Dashboard = () => {
     { activity: "Jogging", date: " 2022-01-01" },
     // More activities...
   ]);
+  const [name, setName] = useState("Name");
 
   return (
     <div className="dashboard p-4 bg-white">
+      <h1 className="text-4xl text-center my-4">Good Morning, {name}</h1>{" "}
       <div className="summary-cards grid grid-cols-3 gap-4">
         <div className="p-4 bg-red-500 rounded shadow">
           Total Habits: {summaryCards.totalHabits}
@@ -27,11 +29,8 @@ const Dashboard = () => {
           Completion Rate: {summaryCards.completionRate}%
         </div>
       </div>
-
       <div className="recent-activity mt-4 bg-black-200">
-        <h2 className="text-xl font-bold mb-2 text-black">
-          Recent Activity
-        </h2>
+        <h2 className="text-xl font-bold mb-2 text-black">Recent Activity</h2>
         {recentActivity.map((activity, index) => (
           <div key={index} className="p-2 bg-white rounded shadow mb-2">
             <span className="font-bold text-black">{activity.activity}</span>
