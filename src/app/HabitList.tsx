@@ -1,8 +1,13 @@
 "use client";
 import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 const deleteHabit = (habitId: number) => {
   // Logic to delete the habit with the given habitId
 };
+const toggleCompletion = (habitId: number) => {
+  // Logic to toggle the completion status of the habit with the given habitId
+};
+
 const HabitList = () => {
   const [habits, setHabits] = useState([
     {
@@ -13,7 +18,6 @@ const HabitList = () => {
       completed: false,
       color: "bg-blue-200",
       icon: "💼",
-       
     },
     {
       id: 2,
@@ -26,8 +30,6 @@ const HabitList = () => {
     },
     // Add more habits as needed
   ]);
-
-  // Add your handler methods here (toggleCompletion, deleteHabit, etc.)
 
   return (
     <div className="habit-list">
@@ -47,15 +49,15 @@ const HabitList = () => {
             </div>
           </div>
           <div className="flex items-center">
-            {/* Replace with actual buttons for actions */}
-            {habit.completed ? "✅" : "⬜"}
-            <span
+            <input
+              type="checkbox"
+              checked={habit.completed}
+              onChange={() => toggleCompletion(habit.id)}
+            />
+            <DeleteIcon
               className="text-lg ml-2 cursor-pointer"
               onClick={() => deleteHabit(habit.id)}
-            >
-              🗑️
-            </span>{" "}
-            {/* Trash icon for deletion */}
+            />
           </div>
         </div>
       ))}
