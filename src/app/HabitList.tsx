@@ -13,6 +13,7 @@ const HabitList = () => {
       completed: false,
       color: "bg-blue-200",
       icon: "💼",
+       
     },
     {
       id: 2,
