@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFire } from "@fortawesome/free-solid-svg-icons";
 import Modal from "./modal";
 import { Habit } from "./types";
 const HabitList = () => {
@@ -18,7 +20,7 @@ const HabitList = () => {
       id: 2,
       title: "Read",
       goal: 30,
-      progress: 1, // And this line
+      progress: 3, // And this line
       completed: false,
       color: "bg-purple-200",
     },
@@ -133,7 +135,10 @@ const HabitList = () => {
               type="checkbox"
               checked={habit.completed}
               onChange={() => toggleCompletion(habit.id)}
+              className="mr-2" // Add right margin
             />
+            {habit.progress > 1 && <FontAwesomeIcon icon={faFire} />}
+            <span>{habit.progress}</span>
             <EditIcon
               className="text-lg ml-2 cursor-pointer"
               onClick={() => openModal(habit)}
