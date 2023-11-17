@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const Dashboard = () => {
   const [summaryCards, setSummaryCards] = useState({
     totalHabits: 5,
@@ -13,9 +13,16 @@ const Dashboard = () => {
     { activity: "Jogging", date: " 2022-01-01" },
     // More activities...
   ]);
+  const [userProfile, setUserProfile] = useState({
+    name: "User Name",
+    // You can add additional profile related state here
+  });
+  const [name, setName] = useState("Name");
 
   return (
     <div className="dashboard p-4 bg-white">
+      <AccountCircleIcon className="absolute top-0 right-0 m-4 text-3xl" />{" "}
+      <h1 className="text-4xl text-center my-4">Good Morning, {name}</h1>{" "}
       <div className="summary-cards grid grid-cols-3 gap-4">
         <div className="p-4 bg-red-500 rounded shadow">
           Total Habits: {summaryCards.totalHabits}
@@ -27,11 +34,8 @@ const Dashboard = () => {
           Completion Rate: {summaryCards.completionRate}%
         </div>
       </div>
-
       <div className="recent-activity mt-4 bg-black-200">
-        <h2 className="text-xl font-bold mb-2 text-black">
-          Recent Activity
-        </h2>
+        <h2 className="text-xl font-bold mb-2 text-black">Recent Activity</h2>
         {recentActivity.map((activity, index) => (
           <div key={index} className="p-2 bg-white rounded shadow mb-2">
             <span className="font-bold text-black">{activity.activity}</span>
