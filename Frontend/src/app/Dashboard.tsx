@@ -12,10 +12,7 @@ const Dashboard = () => {
     completionRate: 70,
   });
 
-  const [recentActivity, setRecentActivity] = useState([
-    { activity: "Jogging", date: " 2022-01-01" },
-    // More activities...
-  ]);
+
   const [userProfile, setUserProfile] = useState({
     name: "User Name",
     // You can add additional profile related state here
@@ -38,23 +35,10 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="recent-activity mt-4 bg-black-200">
-        <h2 className="text-xl font-bold mb-2 text-black">Recent Activity</h2>
-        {recentActivity.map((activity, index) => (
-          <div key={index} className="p-2 bg-white rounded shadow mb-2">
-            <span className="font-bold text-black">{activity.activity}</span>
-            <span className="text-sm text-gray-500">{activity.date}</span>
-          </div>
-        ))}
       </div>
       <div className="quick-access mt-4">
         <button className="p-2 bg-blue-500 text-white rounded shadow">
           Add New Habit
-        </button>
-        <button
-          className="p-2 bg-blue-500 text-white rounded shadow ml-2"
-          onClick={() => setShowCompletedHabits(!showCompletedHabits)}
-        >
-          Show Completed Habits
         </button>
       </div>
     </div>
