@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import axios from 'axios';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { IconButton } from "@mui/material";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 import Brightness2Icon from "@mui/icons-material/Brightness2";
+
 const Dashboard = () => {
   const [summaryCards, setSummaryCards] = useState({
     totalHabits: 5,
@@ -12,13 +14,25 @@ const Dashboard = () => {
     completionRate: 70,
   });
 
-
-  const [userProfile, setUserProfile] = useState({
+  const [userProfile, setUserProfile] = useState<{ name: string } | null>({
     name: "User Name",
     // You can add additional profile related state here
   });
   const [name, setName] = useState("Name");
   const [showCompletedHabits, setShowCompletedHabits] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      // Make a request to the logout endpoint
+      await axios.post('/api/logout');
+      // Clear user info from state and token from storage
+      setUserProfile(null);
+      localStorage.removeItem('token');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <div className="dashboard p-4 bg-white">
       <AccountCircleIcon className="absolute top-0 right-0 m-4 text-3xl" />{" "}
@@ -40,6 +54,7 @@ const Dashboard = () => {
         <button className="p-2 bg-blue-500 text-white rounded shadow">
           Add New Habit
         </button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

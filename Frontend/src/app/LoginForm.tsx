@@ -1,29 +1,30 @@
+// LoginForm.tsx
+
 import React, { useState } from "react";
-import axios from "axios";
 
-interface LoginFormProps {
-  onLoginSuccess: (token: string) => void;
-}
+const LoginForm: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const response = await axios.post<{ token: string }>("/api/login", {
-        username,
-        password,
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
       });
-      onLoginSuccess(response.data.token);
-    } catch (error: any) {
-      setError(error.response ? error.response.data.message : "Login failed");
+      const data = await response.json();
+      // Handle token and user authentication state
+    } catch (error) {
+      // Handle login error
     }
   };
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={handleLogin}>
       <input
         type="text"
         value={username}
@@ -36,10 +37,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button type="submit" onClick={handleLogin}>
-        Login
-      </button>
-      {error && <div>{error}</div>}
+      <button type="submit">Login</button>
     </form>
   );
 };

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import type { NextPageWithLayout } from "./_app";
+import NextPageWithLayout from "./_app";
 import MyComponent from "./Dashboard";
 import HabitList from "./HabitList";
 

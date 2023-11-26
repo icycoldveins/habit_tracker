@@ -1,61 +1,79 @@
 // Backend/src/server.js
 
+// Import necessary modules
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const express = require("express");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const session = require("express-session");
 const app = express();
-const port = 3000;
+const { Sequelize, DataTypes } = require("sequelize");
 
-// Configure the user model (replace this with your actual user model)
-const users = [
-  { id: 1, username: "user1", password: "password1" },
-  { id: 2, username: "user2", password: "password2" },
-  // Add more users as needed
-];
+// Initialize Sequelize and connect to the PostgreSQL database
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: "postgres",
+  }
+);
 
-// Configure the local strategy for passport
-passport.use(
-  new LocalStrategy((username, password, done) => {
-    const user = users.find(
-      (u) => u.username === username && u.password === password
-    );
-    if (user) {
-      return done(null, user);
-    } else {
-      return done(null, false, { message: "Incorrect username or password" });
+// Define the User model
+const User = sequelize.define("User", {
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
+
+// Registration route
+app.post("/api/register", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // Save user to the database
+    const newUser = await User.create({ username, password: hashedPassword });
+    res.status(200).json({ message: "User registered successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Registration failed" });
+  }
+});
+
+// Login route
+app.post("/api/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Find user in the database
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(401).json({ message: "Authentication failed" });
     }
-  })
-);
-
-// Configure session management
-app.use(
-  session({
-    secret: "your-secret-key",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
-// Initialize passport and restore authentication state, if any, from the session
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Serialize and deserialize user for session management
-passport.serializeUser((user, done) => {
-  done(null, user.id);
+    // Compare the provided password with the hashed password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Authentication failed" });
+    }
+    // Generate an authentication token
+    const token = jwt.sign(
+      { username: user.username, userId: user.id },
+      "your-secret-key",
+      { expiresIn: "1h" }
+    );
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: "Login failed" });
+  }
 });
 
-passport.deserializeUser((id, done) => {
-  const user = users.find((u) => u.id === id);
-  done(null, user);
-});
-
-// Your other routes and middleware
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

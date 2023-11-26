@@ -1,25 +1,16 @@
-import React, { useState } from "react";
+// _app.tsx
 
-interface AuthState {
-  isAuthenticated: boolean;
-  user: null | object;
-}
+import type { AppProps } from 'next/app';
+import { NextPage } from 'next';
+import { ReactElement } from 'react';
 
-const AuthContext = React.createContext<
-  [AuthState, React.Dispatch<React.SetStateAction<AuthState>>]
->([
-  { isAuthenticated: false, user: null }, // initial AuthState
-  () => {}, // initial dispatch function
-]);
-
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [authState, setAuthState] = useState<AuthState>({ isAuthenticated: false, user: null });
-
-  return (
-    <AuthContext.Provider value={[authState, setAuthState]}>
-      {children}
-    </AuthContext.Provider>
-  );
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactElement;
 };
 
-export { AuthContext, AuthProvider };
+function MyApp({ Component, pageProps }: AppProps) {
+  const getLayout = (Component as NextPageWithLayout).getLayout || ((page) => page);
+  return getLayout(<Component {...pageProps} />);
+}
+
+export default MyApp;
