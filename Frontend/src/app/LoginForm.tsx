@@ -2,9 +2,15 @@
 
 // LoginForm.tsx
 
+import { useAuthModal } from './AuthModalcontext'; // Adjust the path as necessary
+
+
 import React, { useState } from "react";
 
-const LoginForm: React.FC<{ toggleLogin: () => void }> = ({ toggleLogin }) => {
+const LoginForm: React.FC = () => {
+  const { isLoginVisible, toggleLogin } = useAuthModal();
+
+  if (!isLoginVisible) return null;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,7 +33,7 @@ const LoginForm: React.FC<{ toggleLogin: () => void }> = ({ toggleLogin }) => {
   };
 
   return (
-    <div className="modal-background">
+    <>
       <form onSubmit={handleLogin} className="modal-content">
         <input
           type="text"
@@ -43,7 +49,7 @@ const LoginForm: React.FC<{ toggleLogin: () => void }> = ({ toggleLogin }) => {
         />
         <button type="submit">Login</button>
       </form>
-    </div>
+    </>
   );
 };
 
