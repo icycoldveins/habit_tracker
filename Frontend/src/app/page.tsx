@@ -1,8 +1,10 @@
+// Frontend/src/app/page.tsx
+"use client";
+// Frontend/src/app/page.tsx
 import type { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 import MyComponent from "./Dashboard";
 import HabitList from "./HabitList";
-import LoginForm from "./LoginForm"; // Add this line at the top of your file
 import NavBar from "./Navbar";
 
 type NextPageWithLayout = NextPage & {
@@ -12,7 +14,7 @@ type NextPageWithLayout = NextPage & {
 const HomePage: NextPageWithLayout = () => {
   return (
     <div>
-      <NavBar /> {/* Add this line */}
+      <NavBar />
       <MyComponent />
       <HabitList />
     </div>

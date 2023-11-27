@@ -1,6 +1,7 @@
 // Navbar.tsx
+"use client";
 import React from "react";
-
+import LoginForm from "./LoginForm";
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-gray-800 text-white shadow-lg">
@@ -46,10 +47,7 @@ const Navbar: React.FC = () => {
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Authentication links */}
-            <a
-              href="/login"
-              className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700"
-            >
+            <a className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 cursor-pointer">
               Login
             </a>
             <a
