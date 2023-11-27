@@ -2,10 +2,12 @@
 "use client";
 import React from "react";
 import LoginForm from "./LoginForm";
+import SignUpForm from "./SignupForm"; // Import SignUpForm
 import { useAuthModal } from "./AuthModalcontext"; // Ensure this is the correct path
 
 const Navbar: React.FC = () => {
-  const { isLoginVisible, toggleLogin } = useAuthModal(); // Using the context hook
+  const { isLoginVisible, toggleLogin, isSignUpVisible, toggleSignUp } =
+    useAuthModal(); // Using the context hook
 
   return (
     <>
@@ -57,17 +59,18 @@ const Navbar: React.FC = () => {
               >
                 Login
               </button>
-              <a
-                href="/signup"
-                className="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white"
+              <button
+                onClick={toggleSignUp} // This will toggle the sign-up modal visibility
+                className="ml-4 px-3 py-2 rounded-md text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
               >
                 Sign Up
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </nav>
       {isLoginVisible && <LoginForm />}
+      {isSignUpVisible && <SignUpForm />} 
     </>
   );
 };
