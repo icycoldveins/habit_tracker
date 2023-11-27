@@ -3,7 +3,7 @@
 
 ## Overview
 
-This project is a full-stack web application with a backend built using Node.js and Express, and a frontend developed with React and Next.js.
+This project is a simple full-stack web app habit tracker with a backend built using Node.js and Express, and a frontend developed with React and Next.js.
 
 ## Backend
 
